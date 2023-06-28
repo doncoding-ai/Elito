@@ -2,23 +2,23 @@ vCard - Personal Portfolio
 
 # sidebar
 
-alt = Richard hanrick
-Richard hanrick
-Web developer
+alt = Elijah Ndeto
+Elijah Ndeto
+Data analyst & Web developer
 
 Show Contacts
 
 Email
-richard@example.com
+elito1236@gmail.com
 
 Phone
-+1 (213) 352-2795
++254799123773
 
 Birthday
-June 23, 1982
+June 20, 1997
 
 Location
-Sacramento, California, USA
+Thika, Kenya
 
 # navbar
 
