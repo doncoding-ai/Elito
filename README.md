@@ -1,10 +1,10 @@
 <div align="center">
 
-# vCard - Personal portfolio
+# Elijah Ndeto - Personal portfolio
 
-vCard is a fully responsive personal portfolio website, responsive for all devices, built using HTML, CSS, and JavaScript.
+Welcome to my workd of analytics.
 
- <a href="https://codingstella.github.io/Gaming-website/"><strong>➥ Live Demo</strong></a> 
+ <a href="doncoding-ai.github.io/Elito/"><strong>➥ Live Demo</strong></a> 
  
  </div>
  
