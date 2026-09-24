@@ -1,0 +1,35 @@
+name: Update portfolio from CV
+
+on:
+  push:
+    paths:
+      - "cv/**"
+      - "scripts/parse_cv.py"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  parse-and-commit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: pip install python-docx pdfplumber
+
+      - name: Parse latest CV into profile.json
+        run: python scripts/parse_cv.py
+
+      - name: Commit updated data
+        run: |
+          git config user.name "portfolio-bot"
+          git config user.email "actions@github.com"
+          git add data/profile.json cv/latest.pdf || true
+          git diff --cached --quiet || git commit -m "auto: rebuild profile.json from latest CV"
+          git push
