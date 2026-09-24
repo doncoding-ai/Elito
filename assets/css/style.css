@@ -24,6 +24,25 @@
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
 html { scroll-behavior: smooth; }
+
+/* Lenis owns smooth scrolling when it runs */
+html.lenis, html.lenis body { height: auto; }
+html.lenis { scroll-behavior: auto; }
+.lenis:not(.lenis-autoToggle).lenis-stopped { overflow: clip; }
+.lenis.lenis-smooth iframe { pointer-events: none; }
+
+/* hold the hero back until its letters are split and in their start pose;
+   the delayed animation is a failsafe in case the scripts never arrive */
+.js-motion .hero-inner { visibility: hidden; animation: hero-failsafe 0s 3.5s forwards; }
+@keyframes hero-failsafe { to { visibility: visible; } }
+
+/* gradient headlines split by SplitText: each letter paints its slice */
+.grad-split { background: none !important; }
+.grad-piece {
+  background-image: var(--grad);
+  -webkit-background-clip: text; background-clip: text;
+  color: transparent;
+}
 body {
   background: var(--ink);
   color: var(--text);
@@ -140,7 +159,8 @@ body {
 .name-line { display: block; overflow: hidden; }
 .name-line > span { display: inline-block; }
 .hero-name .name-line:last-child > span {
-  background: linear-gradient(110deg, var(--mint) 5%, var(--azure) 55%, var(--violet) 100%);
+  --grad: linear-gradient(110deg, var(--mint) 5%, var(--azure) 55%, var(--violet) 100%);
+  background: var(--grad);
   -webkit-background-clip: text; background-clip: text;
   color: transparent;
   filter: drop-shadow(0 0 44px rgba(96, 165, 250, 0.28));
@@ -293,7 +313,9 @@ body {
   font-size: .74rem; font-weight: 600; letter-spacing: 1.5px;
   text-transform: uppercase; color: var(--dim); margin-bottom: 12px;
 }
-.dash-card canvas { width: 100%; display: block; }
+/* fixed heights up front: drawing must not reflow the page under ScrollTrigger */
+.dash-card canvas { width: 100%; height: 220px; display: block; }
+.dash-card.dash-wide canvas { height: 130px; }
 
 /* ---------- JOURNEY ---------- */
 .pipeline { position: relative; margin-top: 8px; padding-left: 44px; }
@@ -430,7 +452,8 @@ body {
 .contact { text-align: center; padding-bottom: 150px; }
 .contact .section-sub { margin-left: auto; margin-right: auto; }
 .contact .section-title {
-  background: linear-gradient(110deg, var(--gold), #FFF3D6, var(--gold));
+  --grad: linear-gradient(110deg, var(--gold), #FFF3D6, var(--gold));
+  background: var(--grad);
   -webkit-background-clip: text; background-clip: text; color: transparent;
   filter: drop-shadow(0 0 34px rgba(232,199,123,.2));
 }

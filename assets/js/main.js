@@ -1,13 +1,32 @@
 /* ============================================================
    ELIJAH NDETO — v4.0 "EXECUTIVE AURORA"
-   One aurora light-field (Three.js) whose colours travel with
-   you. Frosted glass skill orbs. Luminous rain in the hero.
-   Rich, silk motion (GSAP). Soft musical pad.
+   One aurora light-field (a WebGL fragment shader) whose colours
+   travel with you. Frosted glass skill orbs. Luminous rain in the
+   hero. Silk motion (GSAP + SplitText), Lenis smooth scroll.
+   Soft musical pad.
    Data-driven from data/profile.json.
    ============================================================ */
 
 const $ = (s) => document.querySelector(s);
 const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const hasGsap = typeof gsap !== 'undefined';
+const hasST = hasGsap && typeof ScrollTrigger !== 'undefined';
+const hasSplit = hasGsap && typeof SplitText !== 'undefined';
+if (hasST) gsap.registerPlugin(ScrollTrigger);
+if (hasSplit) gsap.registerPlugin(SplitText);
+if (!hasGsap || reduceMotion) document.documentElement.classList.remove('js-motion');
+
+/* Lenis smooth scroll, driven by GSAP's ticker so ScrollTrigger stays in lockstep */
+const lenis = (() => {
+  if (reduceMotion || typeof Lenis === 'undefined') return null;
+  const l = new Lenis({ lerp: 0.09, anchors: true, autoRaf: !hasGsap });
+  if (hasGsap) {
+    gsap.ticker.add((time) => l.raf(time * 1000));
+    gsap.ticker.lagSmoothing(0);
+  }
+  if (hasST) l.on('scroll', ScrollTrigger.update);
+  return l;
+})();
 
 /* ============================================================
    1. DATA LOAD + RENDER
@@ -15,7 +34,10 @@ const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').match
 fetch('data/profile.json')
   .then((r) => r.json())
   .then(render)
-  .catch((e) => console.error('profile.json failed to load:', e));
+  .catch((e) => {
+    console.error('profile.json failed to load:', e);
+    document.documentElement.classList.remove('js-motion');
+  });
 
 function render(p) {
   $('#heroTag').textContent = p.identity.tagline;
@@ -125,10 +147,14 @@ function render(p) {
   observeReveals();
   buildDashboard(p);
   spawnOrbs(p);
-  heroEntrance();
-  sectionMotion();
   magneticButtons();
-  if (typeof ScrollTrigger !== 'undefined') ScrollTrigger.refresh();
+  // letters are measured when split, so wait for the real fonts
+  document.fonts.ready.then(() => {
+    heroEntrance();
+    sectionMotion();
+    if (hasST) ScrollTrigger.refresh();
+    if (lenis) lenis.resize();
+  });
 }
 
 /* ============================================================
@@ -201,28 +227,127 @@ document.querySelectorAll('.nav-links a').forEach((a) =>
 );
 
 /* ============================================================
-   5. AURORA — three light ribbons, colours travel with you
+   5. AURORA — one fragment shader on the GPU. Three curtains of
+   light, drifting rays and faint stars; colours travel with the
+   chapters, the cursor bends the light, scrolling stirs it.
    ============================================================ */
+const AURORA_FRAG = `
+precision highp float;
+uniform vec2 uRes;
+uniform float uTime;
+uniform vec2 uMouse;
+uniform float uScroll;
+uniform float uVel;
+uniform vec3 uC0;
+uniform vec3 uC1;
+uniform vec3 uC2;
+
+float hash(vec2 p) {
+  p = fract(p * vec2(123.34, 456.21));
+  p += dot(p, p + 45.32);
+  return fract(p.x * p.y);
+}
+float noise(vec2 p) {
+  vec2 i = floor(p), f = fract(p);
+  vec2 u = f * f * (3.0 - 2.0 * f);
+  return mix(mix(hash(i), hash(i + vec2(1.0, 0.0)), u.x),
+             mix(hash(i + vec2(0.0, 1.0)), hash(i + vec2(1.0, 1.0)), u.x), u.y);
+}
+float fbm(vec2 p) {
+  float v = 0.0, a = 0.5;
+  for (int i = 0; i < 5; i++) {
+    v += a * noise(p);
+    p = p * 2.03 + vec2(1.7, 9.2);
+    a *= 0.5;
+  }
+  return v;
+}
+
+// one curtain: a wandering band with a crisp lower hem, a long soft
+// glow above it, and vertical rays shimmering through
+vec3 curtain(vec2 p, float t, float base, float seed, vec3 col) {
+  float wander = fbm(vec2(p.x * 0.55 + seed, t * 0.06 + seed * 1.3)) - 0.5;
+  float d = p.y - (base + wander * 0.6);
+  float band = d > 0.0 ? exp(-d * d / 0.07) : exp(-d * d / 0.004);
+  float rays = fbm(vec2(p.x * 6.0 + seed * 4.0 + wander * 3.0, t * 0.22));
+  rays = smoothstep(0.3, 0.8, rays);
+  return col * band * (0.3 + 1.1 * rays);
+}
+
+void main() {
+  vec2 uv = gl_FragCoord.xy / uRes;
+  float aspect = uRes.x / uRes.y;
+  vec2 p = vec2((uv.x - 0.5) * aspect, uv.y);
+
+  // cursor: curtains lean toward the pointer and glow a little around it
+  vec2 m = vec2(uMouse.x * 0.5 * aspect, 0.5 - uMouse.y * 0.5);
+  vec2 dm = p - m;
+  float near = exp(-dot(dm, dm) * 5.0);
+  p -= dm * near * 0.12;
+
+  // scroll: the sky slides sideways and the curtains sink as you read
+  float t = uTime;
+  p.x += uScroll * 1.4;
+  float sink = uScroll * 0.25;
+
+  vec3 col = vec3(0.0);
+  col += curtain(p, t, 0.78 - sink, 0.0, uC0);
+  col += curtain(p, t * 1.15, 0.55 - sink, 3.7, uC1) * 0.85;
+  col += curtain(p, t * 0.9, 0.32 - sink, 7.9, uC2) * 0.7;
+  // calmer once you're reading; a little brighter while the page moves
+  col *= (0.3 + uVel * 0.12) * (1.0 - 0.3 * smoothstep(0.03, 0.2, uScroll));
+  col += mix(uC0, uC1, 0.5) * near * 0.05;
+
+  // stars, with a touch of scroll parallax
+  vec2 sp = (p + vec2(0.0, uScroll * 0.35)) * 210.0;
+  float h = hash(floor(sp));
+  float star = step(0.997, h) * (0.55 + 0.45 * sin(t * 1.6 + h * 80.0));
+  star *= smoothstep(0.32, 0.0, length(fract(sp) - 0.5));
+  col += vec3(0.62, 0.77, 1.0) * star * 0.5;
+
+  vec3 ink = vec3(0.024, 0.043, 0.078);
+  vec3 c = ink + col;
+  c *= 1.0 - 0.35 * length(uv - 0.5);
+  c += (hash(gl_FragCoord.xy + fract(t)) - 0.5) / 255.0;
+  gl_FragColor = vec4(c, 1.0);
+}`;
+
 const Aurora = (() => {
   const canvas = document.getElementById('aurora');
-  if (!canvas || typeof THREE === 'undefined') return { set() {} };
+  const gl = canvas && canvas.getContext('webgl', {
+    alpha: false, antialias: false, depth: false, powerPreference: 'low-power',
+  });
+  if (!gl) return { set() {} };
 
-  const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
-  const scene = new THREE.Scene();
-  const camera = new THREE.PerspectiveCamera(48, 1, 0.1, 100);
-  camera.position.set(0, 0, 10);
-
-  function size() {
-    const w = window.innerWidth, h = window.innerHeight;
-    renderer.setSize(w, h, false);
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-    camera.aspect = w / h;
-    camera.updateProjectionMatrix();
+  function compile(type, src) {
+    const s = gl.createShader(type);
+    gl.shaderSource(s, src);
+    gl.compileShader(s);
+    if (!gl.getShaderParameter(s, gl.COMPILE_STATUS)) throw new Error(gl.getShaderInfoLog(s));
+    return s;
   }
-  size();
-  window.addEventListener('resize', size);
+  const prog = gl.createProgram();
+  try {
+    gl.attachShader(prog, compile(gl.VERTEX_SHADER,
+      'attribute vec2 a; void main() { gl_Position = vec4(a, 0.0, 1.0); }'));
+    gl.attachShader(prog, compile(gl.FRAGMENT_SHADER, AURORA_FRAG));
+    gl.linkProgram(prog);
+  } catch (e) {
+    console.error('aurora shader failed:', e);
+    return { set() {} };
+  }
+  gl.useProgram(prog);
 
-  const mobile = window.innerWidth < 700;
+  // one oversized triangle covers the screen
+  gl.bindBuffer(gl.ARRAY_BUFFER, gl.createBuffer());
+  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 3, -1, -1, 3]), gl.STATIC_DRAW);
+  const aLoc = gl.getAttribLocation(prog, 'a');
+  gl.enableVertexAttribArray(aLoc);
+  gl.vertexAttribPointer(aLoc, 2, gl.FLOAT, false, 0, 0);
+
+  const U = {};
+  ['uRes', 'uTime', 'uMouse', 'uScroll', 'uVel', 'uC0', 'uC1', 'uC2']
+    .forEach((n) => { U[n] = gl.getUniformLocation(prog, n); });
 
   /* scene palettes — the aurora re-colours per chapter */
   const SCENES = {
@@ -233,107 +358,79 @@ const Aurora = (() => {
     work:    ['#A78BFA', '#60A5FA', '#5EEAD4'],
     contact: ['#E8C77B', '#FDE68A', '#F0ABFC'],
   };
+  const rgb = (h) => [1, 3, 5].map((i) => parseInt(h.slice(i, i + 2), 16) / 255);
+  const colors = SCENES.hero.map(rgb);
+  let targets = colors.map((c) => c.slice());
 
-  /* ribbons: wide planes displaced by travelling sine fields */
-  const ribbons = [];
-  const SEGX = mobile ? 70 : 130;
-  for (let r = 0; r < 3; r++) {
-    const geo = new THREE.PlaneGeometry(34, 2.6 + r * 0.6, SEGX, 8);
-    const mat = new THREE.MeshBasicMaterial({
-      color: new THREE.Color(SCENES.hero[r]),
-      transparent: true,
-      opacity: 0.10 + r * 0.015,
-      blending: THREE.AdditiveBlending,
-      depthWrite: false,
-      side: THREE.DoubleSide,
-    });
-    const mesh = new THREE.Mesh(geo, mat);
-    mesh.position.set(0, 2.6 - r * 2.4, -3 - r * 1.5);
-    mesh.rotation.x = -0.5 - r * 0.12;
-    mesh.rotation.z = (r - 1) * 0.16;
-    mesh.userData = {
-      base: geo.attributes.position.array.slice(),
-      speed: 0.24 + r * 0.09,
-      amp: 0.7 + r * 0.28,
-      freq: 0.24 + r * 0.05,
-      phase: r * 2.1,
-      target: new THREE.Color(SCENES.hero[r]),
-    };
-    scene.add(mesh);
-    ribbons.push(mesh);
+  // the aurora is soft, so render it below screen resolution and let CSS upscale
+  const scale = window.innerWidth < 700 ? 0.5 : 0.65;
+  function size() {
+    canvas.width = Math.max(1, Math.round(window.innerWidth * scale));
+    canvas.height = Math.max(1, Math.round(window.innerHeight * scale));
+    gl.viewport(0, 0, canvas.width, canvas.height);
   }
+  size();
 
-  /* faint drifting light motes for depth */
-  const MN = mobile ? 90 : 190;
-  const mpos = new Float32Array(MN * 3);
-  for (let i = 0; i < MN; i++) {
-    mpos[i * 3] = (Math.random() - 0.5) * 26;
-    mpos[i * 3 + 1] = (Math.random() - 0.5) * 16;
-    mpos[i * 3 + 2] = -1 - Math.random() * 7;
-  }
-  const mGeo = new THREE.BufferGeometry();
-  mGeo.setAttribute('position', new THREE.BufferAttribute(mpos, 3));
-  const mMat = new THREE.PointsMaterial({
-    size: 0.045, color: 0x9fc4ff, transparent: true, opacity: 0.28, depthWrite: false,
-  });
-  scene.add(new THREE.Points(mGeo, mMat));
-
-  let mx = 0, my = 0;
+  let mx = 0, my = 0, smx = 0, smy = 0, vel = 0, lastY = window.scrollY, time = 8;
   window.addEventListener('pointermove', (e) => {
     mx = (e.clientX / window.innerWidth - 0.5) * 2;
     my = (e.clientY / window.innerHeight - 0.5) * 2;
   });
 
-  function deform(t) {
-    ribbons.forEach((m) => {
-      const u = m.userData;
-      const posA = m.geometry.attributes.position;
-      const arr = posA.array, base = u.base;
-      for (let i = 0; i < arr.length; i += 3) {
-        const x = base[i];
-        arr[i + 2] = base[i + 2] +
-          Math.sin(x * u.freq + t * u.speed + u.phase) * u.amp +
-          Math.sin(x * u.freq * 2.3 + t * u.speed * 1.6) * u.amp * 0.35;
-        arr[i + 1] = base[i + 1] +
-          Math.cos(x * u.freq * 0.7 + t * u.speed * 0.8 + u.phase) * 0.4;
-      }
-      posA.needsUpdate = true;
-      m.material.color.lerp(u.target, 0.02);
-    });
+  function progress() {
+    const max = document.documentElement.scrollHeight - window.innerHeight;
+    return max > 0 ? window.scrollY / max : 0;
+  }
+
+  function draw() {
+    gl.uniform2f(U.uRes, canvas.width, canvas.height);
+    gl.uniform1f(U.uTime, time);
+    gl.uniform2f(U.uMouse, smx, smy);
+    gl.uniform1f(U.uScroll, progress());
+    gl.uniform1f(U.uVel, vel);
+    gl.uniform3fv(U.uC0, colors[0]);
+    gl.uniform3fv(U.uC1, colors[1]);
+    gl.uniform3fv(U.uC2, colors[2]);
+    gl.drawArrays(gl.TRIANGLES, 0, 3);
   }
 
   if (reduceMotion) {
-    deform(1.5);
-    renderer.render(scene, camera);
+    const still = () => { size(); draw(); };
+    window.addEventListener('resize', still);
+    window.addEventListener('scroll', () => requestAnimationFrame(draw), { passive: true });
+    draw();
     return {
       set(name) {
-        const pal = SCENES[name] || SCENES.hero;
-        ribbons.forEach((m, i) => { m.material.color.set(pal[i]); });
-        renderer.render(scene, camera);
+        (SCENES[name] || SCENES.hero).forEach((h, i) => { colors[i] = rgb(h); });
+        draw();
       },
     };
   }
 
-  let last = performance.now(), t = 0;
+  window.addEventListener('resize', size);
+  let last = performance.now();
   (function frame(now) {
     requestAnimationFrame(frame);
-    if (document.hidden) return;
-    const dt = Math.min((now - last) / 16.67, 2.5);
+    if (document.hidden) { last = now; return; }
+    const dt = Math.min(Math.max(now - last, 0) / 16.67, 2.5);
     last = now;
-    t += 0.01 * dt;
-    deform(t);
-    // slow drift + cursor parallax
-    camera.position.x += (mx * 0.6 - camera.position.x) * 0.02 * dt;
-    camera.position.y += (-my * 0.4 - camera.position.y) * 0.02 * dt;
-    camera.lookAt(0, 0, -3);
-    renderer.render(scene, camera);
+
+    const y = window.scrollY;
+    const v = Math.min(Math.abs(y - lastY) / 40, 1);
+    lastY = y;
+    vel += (v - vel) * 0.06 * dt;
+    time += (dt / 60) * (1 + vel * 3);
+
+    smx += (mx - smx) * 0.04 * dt;
+    smy += (my - smy) * 0.04 * dt;
+    colors.forEach((c, i) => {
+      for (let k = 0; k < 3; k++) c[k] += (targets[i][k] - c[k]) * 0.025 * dt;
+    });
+    draw();
   })(last);
 
   return {
-    set(name) {
-      const pal = SCENES[name] || SCENES.hero;
-      ribbons.forEach((m, i) => { m.userData.target = new THREE.Color(pal[i]); });
-    },
+    set(name) { targets = (SCENES[name] || SCENES.hero).map(rgb); },
   };
 })();
 
@@ -405,7 +502,7 @@ const Aurora = (() => {
     requestAnimationFrame(frame);
     const r = hero.getBoundingClientRect();
     if (r.bottom < 0) return; // hero off screen — sleep
-    const dt = Math.min((now - last) / 16.67, 2.5);
+    const dt = Math.min(Math.max(now - last, 0) / 16.67, 2.5);
     last = now;
     ctx.clearRect(0, 0, W, H);
 
@@ -509,29 +606,81 @@ function spawnOrbs(p) {
 /* ============================================================
    8. HERO ENTRANCE + SECTION MOTION — the choreography
    ============================================================ */
+/* SplitText breaks a gradient-clipped headline into pieces; give each piece
+   its own slice of the parent's gradient so the colour stays continuous */
+function splitWithGradient(el, vars) {
+  const split = SplitText.create(el, vars);
+  if (getComputedStyle(el).getPropertyValue('--grad').trim()) {
+    const box = el.getBoundingClientRect();
+    split.chars.forEach((c) => {
+      const b = c.getBoundingClientRect();
+      c.classList.add('grad-piece');
+      c.style.backgroundSize = `${box.width}px ${box.height}px`;
+      c.style.backgroundPosition = `${box.left - b.left}px ${box.top - b.top}px`;
+    });
+    el.classList.add('grad-split');
+  }
+  return split;
+}
+
+function unsplit(el, split) {
+  split.revert();
+  el.classList.remove('grad-split');
+}
+
 function heroEntrance() {
-  if (reduceMotion || typeof gsap === 'undefined') return;
+  if (reduceMotion || !hasGsap) return;
   const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
-  tl.from('#heroHello', { y: 18, opacity: 0, duration: 0.7 }, 0.2)
-    .from('.name-line > span', { yPercent: 110, duration: 1.05, stagger: 0.12, ease: 'power4.out' }, 0.35)
-    .from('.hero-role', { y: 16, opacity: 0, duration: 0.7 }, 0.95)
-    .from('.hero-tag', { y: 16, opacity: 0, duration: 0.7 }, 1.1)
-    .from('.hero-actions .btn', { y: 18, opacity: 0, duration: 0.6, stagger: 0.1 }, 1.25)
-    .from('.scroll-cue', { opacity: 0, duration: 0.8 }, 1.6);
+  tl.from('#heroHello', { y: 18, opacity: 0, duration: 0.7 }, 0.2);
+
+  // the name arrives letter by letter, each line rising out of its mask
+  const names = gsap.utils.toArray('.name-line > span');
+  if (hasSplit) {
+    names.forEach((el, i) => {
+      const split = splitWithGradient(el, { type: 'chars' });
+      tl.from(split.chars, {
+        yPercent: 118, rotate: 7, opacity: 0, duration: 1.1, ease: 'power4.out', stagger: 0.045,
+        onComplete: () => unsplit(el, split),
+      }, 0.35 + i * 0.18);
+    });
+  } else {
+    tl.from(names, { yPercent: 110, duration: 1.05, stagger: 0.12, ease: 'power4.out' }, 0.35);
+  }
+
+  tl.from('.hero-role', { y: 16, opacity: 0, duration: 0.7 }, 1.05)
+    .from('.hero-tag', { y: 16, opacity: 0, duration: 0.7 }, 1.2)
+    .from('.hero-actions .btn', { y: 18, opacity: 0, duration: 0.6, stagger: 0.1 }, 1.35)
+    .from('.scroll-cue', { opacity: 0, duration: 0.8 }, 1.7);
+  // every piece now holds its start state, so the hero can be shown
+  document.documentElement.classList.remove('js-motion');
 }
 
 function sectionMotion() {
-  if (reduceMotion || typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') {
+  if (reduceMotion || !hasST) {
     document.querySelector('.pipeline')?.style.setProperty('--line-grow', 1);
     return;
   }
-  gsap.registerPlugin(ScrollTrigger);
 
-  // eyebrow → title → sub rise in, one voice everywhere
-  gsap.utils.toArray('.st-reveal').forEach((el) => {
+  // eyebrow and sub rise in, one voice everywhere
+  gsap.utils.toArray('.st-reveal:not(.section-title)').forEach((el) => {
     gsap.from(el, {
       y: 36, opacity: 0, duration: 0.85, ease: 'power3.out',
       scrollTrigger: { trigger: el, start: 'top 86%', once: true },
+    });
+  });
+
+  // headlines type themselves in, letter by letter, line by line
+  gsap.utils.toArray('.section-title').forEach((el) => {
+    const trigger = { trigger: el, start: 'top 86%', once: true };
+    if (!hasSplit) {
+      gsap.from(el, { y: 36, opacity: 0, duration: 0.85, ease: 'power3.out', scrollTrigger: trigger });
+      return;
+    }
+    const split = splitWithGradient(el, { type: 'lines,chars', mask: 'lines' });
+    gsap.from(split.chars, {
+      yPercent: 110, duration: 0.9, ease: 'power4.out', stagger: 0.016,
+      scrollTrigger: trigger,
+      onComplete: () => unsplit(el, split),
     });
   });
 

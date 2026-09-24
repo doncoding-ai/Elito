@@ -2,10 +2,11 @@
 
 Live: https://doncoding-ai.github.io/Elito/
 
-A leadership portfolio. Deep navy ink, aurora light ribbons (Three.js) whose
-colours travel with you through five chapters, frosted-glass cards and skill
-orbs, luminous rain in the hero, silk motion (GSAP ScrollTrigger), and a soft
-musical ambient pad (off by default).
+A leadership portfolio. Deep navy ink, an aurora drawn by a WebGL fragment
+shader whose colours travel with you through five chapters and bend toward the
+cursor, frosted-glass cards and skill orbs, luminous rain in the hero, silk
+motion (GSAP ScrollTrigger + SplitText letter reveals), Lenis smooth scrolling,
+and a soft musical ambient pad (off by default).
 
 Chapters: Hero → Impact → Journey → Craft → Selected Work → Let's talk.
 
