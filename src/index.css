@@ -1,0 +1,99 @@
+@import "tailwindcss";
+
+/* Design tokens — locked 24 Sep: neon night on near-black */
+@theme {
+  --color-black: #05060a;
+  --color-night: #0a0f1f;
+  --color-blue: #2f8bff;
+  --color-green: #39ff88;
+  --color-gold: #f5b83d;
+  --color-orange: #ff8a3d;
+  --color-mist: #eef2f7;
+  --color-slate: #8a94a6;
+
+  --font-display: "Sora", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+}
+
+html {
+  color-scheme: dark;
+  background: var(--color-black);
+}
+body {
+  background: var(--color-black);
+  color: var(--color-mist);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+::selection {
+  background: var(--color-green);
+  color: var(--color-black);
+}
+:focus-visible {
+  outline: 2px solid var(--color-green);
+  outline-offset: 3px;
+  border-radius: 8px;
+}
+
+.glass {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+
+/* Neon border beam: a light that travels around a pill (Magic UI pattern) */
+@property --beam-angle {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+@keyframes beam-spin {
+  to { --beam-angle: 360deg; }
+}
+.beam {
+  background: conic-gradient(
+    from var(--beam-angle),
+    transparent 0deg,
+    var(--color-green) 60deg,
+    var(--color-blue) 120deg,
+    transparent 180deg,
+    transparent 360deg
+  );
+  animation: beam-spin 3.2s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .beam { animation: none; background: linear-gradient(90deg, var(--color-green), var(--color-blue)); }
+}
+
+/* How I lead: a short dash of light that travels along each bridge line */
+.lead-flow {
+  stroke-dasharray: 26 400;
+  stroke-dashoffset: 426;
+  animation: lead-flow 2.6s linear infinite;
+  filter: drop-shadow(0 0 4px currentColor);
+}
+@keyframes lead-flow {
+  to { stroke-dashoffset: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .lead-flow { animation: none; stroke-dasharray: none; opacity: 0.35; }
+}
+
+/* Toolkit: a light that runs along the stage track */
+.tk-packet {
+  background: linear-gradient(90deg, transparent, #39ff88, transparent);
+  box-shadow: 0 0 12px rgba(57, 255, 136, 0.7);
+  animation: tk-run 4.5s cubic-bezier(0.45, 0, 0.25, 1) infinite;
+}
+@keyframes tk-run {
+  from { left: 0%; opacity: 0; }
+  10% { opacity: 1; }
+  90% { opacity: 1; }
+  to { left: calc(100% - 6rem); opacity: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .tk-packet { animation: none; opacity: 0; }
+}

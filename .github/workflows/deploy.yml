@@ -1,0 +1,81 @@
+name: Build and deploy portfolio
+
+# Runs on every push to main and always rebuilds the site. The CV parser only
+# runs when something under cv/ changed in the push (or on a manual run), so
+# ordinary code pushes never produce a bot commit.
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Did the CV change?
+        id: cv
+        run: |
+          BEFORE="${{ github.event.before }}"
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ] || [ -z "$BEFORE" ] || [ "$BEFORE" = "0000000000000000000000000000000000000000" ]; then
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          elif git diff --name-only "$BEFORE" "${{ github.sha }}" -- cv/ | grep -q .; then
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - uses: actions/setup-python@v5
+        if: steps.cv.outputs.changed == 'true'
+        with:
+          python-version: "3.12"
+
+      - name: Parse the newest CV into data/profile.json
+        if: steps.cv.outputs.changed == 'true'
+        run: |
+          pip install python-docx pdfplumber
+          python scripts/parse_cv.py
+
+      - name: Commit refreshed data (if the CV changed anything)
+        if: steps.cv.outputs.changed == 'true'
+        run: |
+          git config user.name "portfolio-bot"
+          git config user.email "actions@github.com"
+          git add data/profile.json cv/latest.pdf public/cv/latest.pdf || true
+          git diff --cached --quiet || (git commit -m "auto: refresh profile from latest CV" && git push)
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Build the site
+        run: |
+          npm ci
+          npm run build
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

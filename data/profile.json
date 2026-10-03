@@ -1,0 +1,259 @@
+{
+  "generated_from": "Elijah_Ndeto_CV_09_2026.docx",
+  "generated_at": "2026-10-03",
+  "identity": {
+    "name": "Elijah Ndeto",
+    "headline": "Senior Data Engineer",
+    "location": "Nairobi, Kenya",
+    "email": "elito1236@gmail.com",
+    "linkedin": "https://linkedin.com/in/elito0905",
+    "github": "https://github.com/doncoding-ai",
+    "tagline": "I design and run the data platforms behind real-time decisions, from ingestion to recovery.",
+    "roles": [
+      "Senior Data Engineer",
+      "Real-time streaming on GCP",
+      "Lakehouse and cloud migration",
+      "Data architecture at scale"
+    ]
+  },
+  "summary": "Senior Data Engineer with 5+ years designing, migrating and running data platforms across cloud and on-premise environments. Currently own near real-time BI streaming infrastructure on GCP at Sportserve, from ingestion to recovery. Previously architected an enterprise warehouse across 20+ source systems, moved 15+ systems to Snowflake, and led an on-premise to Databricks and Snowflake lakehouse migration. Known for taking end-to-end ownership of reliability, governance and data quality, and for translating between BI, warehouse and engineering teams.",
+  "telemetry": [
+    {
+      "value": 5,
+      "suffix": "+",
+      "label": "Years in production",
+      "detail": "Auditor to architect to senior engineer"
+    },
+    {
+      "value": 40,
+      "suffix": "+",
+      "label": "Schemas reverse-engineered",
+      "detail": "Legacy systems decoded and modelled"
+    },
+    {
+      "value": 20,
+      "suffix": "+",
+      "label": "Source systems architected",
+      "detail": "Unified into one enterprise warehouse"
+    },
+    {
+      "value": 15,
+      "suffix": "+",
+      "label": "Systems migrated to cloud",
+      "detail": "On-premise to Snowflake"
+    }
+  ],
+  "currently": {
+    "company": "Sportserve",
+    "role": "Senior Data Engineer, BI Streaming Platform",
+    "since": "Jan 2026",
+    "line": "Running near real-time BI streaming on GCP, and taking server-side marketing tracking to production."
+  },
+  "experience": [
+    {
+      "role": "Senior Data Engineer – BI Streaming Platform",
+      "company": "Sportserve",
+      "period": "Jan 2026 — Present",
+      "tag": "STREAMING",
+      "bullets": [
+        "Took ownership of the CRM activation platform through handover and stood up its pre-production environment across six markets (LATAM, India, Japan, Rest of Asia, Rest of World and a brand market): Cloud Functions, Cloud Run, Eventarc, Firestore, GCS and APIs, with CI/CD for Cloud Run services.",
+        "Built and shipped server-side tracking that streams successful-deposit events from the payments pipeline to GA4 via Google Tag Manager, with player-level user IDs, a currency dimension and success and failure logging in BigQuery.",
+        "Delivered a server-side GTM marketing-campaign integration from investigation to production in about five weeks; now extending it to near real-time first-time-deposit tracking and handing knowledge over to the team.",
+        "Designed and deployed a Firestore-to-BigQuery backfill solution to recover missing records, and hardened production pipelines through runtime upgrades, duplicate removal, scheduler fixes and a documented review of game-provider Cloud Functions.",
+        "Partnered with business analysts on payments intelligence: built BigQuery tables and monitoring views for affiliate statistics, bank-transaction matching and payment-provider reconciliation."
+      ],
+      "stack": [
+        "GCP",
+        "BigQuery",
+        "Cloud Run",
+        "Cloud Functions",
+        "Eventarc",
+        "Firestore",
+        "GTM",
+        "GA4",
+        "CI/CD"
+      ]
+    },
+    {
+      "role": "Data Engineer",
+      "company": "DataSeal Software",
+      "period": "2024 — 2025",
+      "tag": "LAKEHOUSE",
+      "bullets": [
+        "Designed and implemented scalable data pipelines and integration frameworks across multiple enterprise data sources.",
+        "Led transition from on-premise data solutions to cloud-based architectures, leveraging Databricks and Snowflake.",
+        "Built and optimised data ingestion and transformation pipelines within a lakehouse architecture (Medallion: Bronze → Silver → Gold).",
+        "Developed feature engineering workflows using PySpark to support predictive analytics models (XGBoost, Random Forest, TFT).",
+        "Applied DevOps practices, Unity Catalog governance, YAML scheduling, and modular Python wheel-based pipeline design."
+      ],
+      "stack": [
+        "Databricks",
+        "Snowflake",
+        "PySpark",
+        "Unity Catalog",
+        "Python"
+      ]
+    },
+    {
+      "role": "Data Architect",
+      "company": "DataSeal Software",
+      "period": "2023 — 2024",
+      "tag": "ARCHITECTURE",
+      "bullets": [
+        "Designed and governed enterprise data architecture and integration frameworks across 20+ source systems.",
+        "Implemented multi-layered data architecture: raw ingestion → integration → Data Vault → dimensional modelling → reporting layers.",
+        "Established data quality and validation frameworks, improving accuracy and trust in reporting datasets.",
+        "Applied MDM strategies, PII/PHI masking, RBAC, indexing, and partitioning for governance, security, and performance.",
+        "Collaborated with architects, SMEs, and stakeholders to translate business requirements into logical and physical data models."
+      ],
+      "stack": [
+        "Data Vault",
+        "MDM",
+        "RBAC",
+        "ERWIN",
+        "SQL"
+      ]
+    },
+    {
+      "role": "Data Analyst / Data Modeler",
+      "company": "DataSeal Software",
+      "period": "2022 — 2023",
+      "tag": "MODELLING",
+      "bullets": [
+        "Integrated 10+ source systems into a Common Information Model (CIM) for consistent and unified reporting.",
+        "Conducted reverse engineering of 40+ schemas and supported migration of 15+ source systems to Snowflake EDW.",
+        "Designed dimensional data models (facts and dimensions) and developed source-to-target mapping frameworks."
+      ],
+      "stack": [
+        "Snowflake",
+        "Dimensional Modelling",
+        "CIM",
+        "SQL"
+      ]
+    },
+    {
+      "role": "Data Quality Auditor",
+      "company": "Bureau Veritas",
+      "period": "2021 — 2022",
+      "tag": "QUALITY",
+      "bullets": [
+        "Ensured data accuracy and compliance through auditing, validation, and analytical reporting processes.",
+        "Delivered analytical insights to support operational decision-making; maintained high standards of data quality and reporting integrity."
+      ],
+      "stack": [
+        "Auditing",
+        "Validation",
+        "Reporting"
+      ]
+    },
+    {
+      "role": "IT Support Specialist",
+      "company": "Don’s Technologies",
+      "period": "2019 — 2021",
+      "tag": "SUPPORT",
+      "bullets": [
+        "Provided technical support, software maintenance and troubleshooting for business clients.",
+        "Set up networking and infrastructure, including CCTV and connectivity solutions.",
+        "Supported website development, technical documentation and software rollouts."
+      ],
+      "stack": [
+        "Support",
+        "Networking",
+        "Web"
+      ]
+    }
+  ],
+  "stack": [
+    {
+      "group": "Ingest & stream",
+      "items": [
+        "Cloud Run",
+        "Cloud Functions",
+        "Eventarc",
+        "Pub/Sub",
+        "Kafka",
+        "REST APIs",
+        "GTM server-side"
+      ]
+    },
+    {
+      "group": "Transform",
+      "items": [
+        "dbt",
+        "PySpark",
+        "Airflow",
+        "SQL",
+        "Python"
+      ]
+    },
+    {
+      "group": "Warehouse & lakehouse",
+      "items": [
+        "BigQuery",
+        "Snowflake",
+        "Databricks",
+        "Azure Synapse",
+        "Firestore",
+        "GCS"
+      ]
+    },
+    {
+      "group": "Govern",
+      "items": [
+        "Unity Catalog",
+        "Collibra",
+        "Data Vault",
+        "MDM",
+        "RBAC"
+      ]
+    },
+    {
+      "group": "Visualise",
+      "items": [
+        "Power BI",
+        "Tableau",
+        "Looker Studio",
+        "GA4"
+      ]
+    }
+  ],
+  "projects": [
+    {
+      "name": "Cloud Data Engineering Pipeline",
+      "platform": "Azure",
+      "description": "End-to-end pipeline using Azure Data Factory, Data Lake, Databricks, and Synapse for scalable ingestion, transformation, and BI.",
+      "stack": [
+        "ADF",
+        "Data Lake",
+        "Databricks",
+        "Synapse"
+      ]
+    },
+    {
+      "name": "Modern Data Stack",
+      "platform": "dbt + Snowflake",
+      "description": "Built transformation pipelines with dbt on Snowflake; implemented staging, dimensional models, and analytics-ready datasets.",
+      "stack": [
+        "dbt",
+        "Snowflake",
+        "SQL"
+      ]
+    },
+    {
+      "name": "API-Based ETL Pipeline",
+      "platform": "",
+      "description": "Automated pipelines integrating external API data (Coinbase OHLCV) into PostgreSQL via SQLAlchemy for analytical workloads.",
+      "stack": [
+        "Python",
+        "SQLAlchemy",
+        "PostgreSQL"
+      ]
+    }
+  ],
+  "education": {
+    "degree": "B.Sc. Statistics and Programming",
+    "school": "Machakos University",
+    "period": "2015 — 2019"
+  },
+  "cv_download": "cv/latest.pdf"
+}
