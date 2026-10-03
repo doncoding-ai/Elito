@@ -1,0 +1,189 @@
+{
+  "_note": "Hand-edited. The CV parser never touches this file. Every example below comes from the September 2026 CV.",
+  "lead": {
+    "eyebrow": "How I lead",
+    "title": "Four habits behind every platform I run.",
+    "intro": "Titles change. These don't. Each one comes with the work that proves it.",
+    "principles": [
+      {
+        "key": "ownership",
+        "label": "Ownership",
+        "accent": "blue",
+        "title": "I own what I run, including when it breaks.",
+        "proof": "At Sportserve I took over the CRM activation platform at handover and stood up its pre-production environment for six markets. When records went missing, I designed the Firestore-to-BigQuery backfill that brought them back.",
+        "where": "Sportserve · 2026",
+        "stat": {
+          "value": "6",
+          "label": "markets on one platform"
+        },
+        "visual": "recovery",
+        "markets": [
+          "LATAM",
+          "India",
+          "Japan",
+          "Rest of Asia",
+          "Rest of world",
+          "Brand market"
+        ]
+      },
+      {
+        "key": "delivery",
+        "label": "Delivery",
+        "accent": "green",
+        "title": "Investigation to production, then hand it over.",
+        "proof": "I took a server-side GTM marketing-campaign integration from first investigation to production in about five weeks, then documented it and handed the knowledge to the team so it doesn't depend on me.",
+        "where": "Sportserve · 2026",
+        "stat": {
+          "value": "~5",
+          "label": "weeks to production"
+        },
+        "visual": "timeline"
+      },
+      {
+        "key": "partnership",
+        "label": "Partnership",
+        "accent": "blue",
+        "title": "I sit between the business question and the pipeline.",
+        "proof": "I work with business analysts on payments intelligence, building the BigQuery tables and monitoring views behind affiliate statistics, bank-transaction matching and payment-provider reconciliation.",
+        "where": "Sportserve · 2026",
+        "stat": {
+          "value": "3",
+          "label": "payment questions answered"
+        },
+        "visual": "bridge"
+      },
+      {
+        "key": "governance",
+        "label": "Governance",
+        "accent": "green",
+        "title": "Trust is designed in, not bolted on.",
+        "proof": "As data architect across 20+ source systems, I built data-quality checks, master data management, PII/PHI masking and role-based access into the architecture from the first layer, not after the first audit.",
+        "where": "DataSeal Software · 2023–2024",
+        "stat": {
+          "value": "20+",
+          "label": "source systems governed"
+        },
+        "visual": "layers"
+      }
+    ]
+  },
+  "cases": {
+    "eyebrow": "Case studies",
+    "title": "Three platforms, start to finish.",
+    "intro": "Pick one. Each opens on the problem, what I built, and what it changed.",
+    "items": [
+      {
+        "key": "deposits",
+        "accent": "blue",
+        "company": "Sportserve",
+        "years": "2026 – now",
+        "short": "Real-time deposit tracking",
+        "title": "Payment events, streamed to marketing in near real time.",
+        "problem": "Marketing needed to see successful deposits as they happened, with the player and currency attached, and the team needed proof of every event that failed.",
+        "did": [
+          "Built server-side tracking that streams successful-deposit events from the payments pipeline to GA4 through Google Tag Manager.",
+          "Attached player-level user IDs and a currency dimension, and logged every success and failure to BigQuery.",
+          "Took the server-side GTM campaign integration from investigation to production, then extended it toward first-time-deposit tracking."
+        ],
+        "result": "Deposits reach GA4 with the player and currency on them, and every event, sent or failed, has a record in BigQuery.",
+        "metrics": [
+          {
+            "value": "~5",
+            "label": "weeks, investigation to production"
+          },
+          {
+            "value": "Live",
+            "label": "in production, extending to first-time deposits"
+          }
+        ],
+        "stack": [
+          "GTM server-side",
+          "GA4",
+          "Cloud Run",
+          "Cloud Functions",
+          "BigQuery"
+        ],
+        "flow": "deposits"
+      },
+      {
+        "key": "lakehouse",
+        "accent": "green",
+        "company": "DataSeal Software",
+        "years": "2024 – 2025",
+        "short": "On-prem to cloud lakehouse",
+        "title": "From on-premise servers to a governed cloud lakehouse.",
+        "problem": "Enterprise data sat on on-premise systems that couldn't scale and couldn't feed the predictive work the business wanted.",
+        "did": [
+          "Led the move to Databricks and Snowflake on a Medallion lakehouse: Bronze, Silver, Gold.",
+          "Governed it with Unity Catalog and packaged pipelines as modular Python wheels on YAML schedules.",
+          "Built PySpark feature engineering behind XGBoost, Random Forest and TFT models."
+        ],
+        "result": "Enterprise data moved onto a governed cloud lakehouse, with Gold tables feeding three predictive model families.",
+        "metrics": [
+          {
+            "value": "3",
+            "label": "model families fed"
+          },
+          {
+            "value": "3",
+            "label": "Medallion layers, governed end to end"
+          }
+        ],
+        "stack": [
+          "Databricks",
+          "Snowflake",
+          "PySpark",
+          "Unity Catalog",
+          "Python"
+        ],
+        "flow": "lakehouse"
+      },
+      {
+        "key": "warehouse",
+        "accent": "blue",
+        "company": "DataSeal Software",
+        "years": "2022 – 2024",
+        "short": "20+ systems, one warehouse",
+        "title": "Twenty source systems, one warehouse people trust.",
+        "problem": "More than twenty source systems, each shaped differently, and reporting that nobody fully trusted.",
+        "did": [
+          "Reverse-engineered 40+ schemas and moved 15+ source systems into a Snowflake enterprise warehouse.",
+          "Unified 10+ systems into one Common Information Model, then designed the layers: raw, integration, Data Vault, dimensional, reporting.",
+          "Built in data-quality checks, MDM, PII/PHI masking and role-based access from the first layer."
+        ],
+        "result": "More accurate, more trusted reporting on one architecture and one information model, with quality and access rules enforced by the platform instead of by hand.",
+        "metrics": [
+          {
+            "value": "20+",
+            "label": "source systems architected"
+          },
+          {
+            "value": "40+",
+            "label": "schemas reverse-engineered"
+          },
+          {
+            "value": "15+",
+            "label": "systems migrated"
+          }
+        ],
+        "stack": [
+          "Snowflake",
+          "Data Vault",
+          "ERWIN",
+          "MDM",
+          "SQL"
+        ],
+        "flow": "warehouse"
+      }
+    ]
+  },
+  "contact": {
+    "eyebrow": "Contact",
+    "lines": [
+      "Let’s build",
+      "what’s next."
+    ],
+    "intro": "If you’re building a data platform that has to be right and has to be fast, I’d like to hear about it.",
+    "availability": "Based in Nairobi, working with teams across time zones."
+  }
+}

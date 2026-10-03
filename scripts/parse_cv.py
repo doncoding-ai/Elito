@@ -305,7 +305,10 @@ def main() -> int:
     # keep a stable download URL
     if cv.suffix.lower() == ".pdf":
         shutil.copy(cv, CV_DIR / "latest.pdf")
-        print("Updated cv/latest.pdf")
+        pub = ROOT / "public" / "cv"
+        pub.mkdir(parents=True, exist_ok=True)
+        shutil.copy(cv, pub / "latest.pdf")
+        print("Updated cv/latest.pdf and public/cv/latest.pdf")
     else:
         print("NOTE: newest CV is a .docx — cv/latest.pdf not updated. "
               "Drop a PDF too if you want the download button current.")

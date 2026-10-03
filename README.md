@@ -1,21 +1,41 @@
-# ELIJAH NDETO — v4.0 "EXECUTIVE AURORA"
+# Elijah Ndeto — portfolio
 
 Live: https://doncoding-ai.github.io/Elito/
 
-A leadership portfolio. Deep navy ink, an aurora drawn by a WebGL fragment
-shader whose colours travel with you through five chapters and bend toward the
-cursor, frosted-glass cards and skill orbs, luminous rain in the hero, silk
-motion (GSAP ScrollTrigger + SplitText letter reveals), Lenis smooth scrolling,
-and a soft musical ambient pad (off by default).
+React + Vite + Tailwind CSS + Motion (`motion/react`), built and published to GitHub Pages by a GitHub Action on every push to `main`.
 
-Chapters: Hero → Impact → Journey → Craft → Selected Work → Let's talk.
+## Run it locally
 
-## Updating content
-Drop a new CV (PDF preferred) into `cv/` and push. The GitHub Action parses it,
-rebuilds `data/profile.json`, refreshes `cv/latest.pdf`, and the site updates
-itself. Hand-tuned fields (tagline, roles, tags, proficiency) survive.
-
-Local preview:
+```bash
+npm install
+npm run dev        # http://localhost:5173
 ```
-python -m http.server 8000
-```
+
+## Update the site from a new CV
+
+1. Drop the new CV into `cv/`. Add a PDF as well and it also becomes the **Download CV** file.
+2. Push to `main`.
+3. The Action reads the CV, refreshes `data/profile.json`, rebuilds and republishes. Impact numbers, Journey and Toolkit update on their own.
+
+## Where things live
+
+| Path | What it is |
+| --- | --- |
+| `cv/` | Your CVs. The newest one is read on every push that changes this folder. |
+| `data/profile.json` | Generated from the CV: name, roles, numbers, experience, toolkit. |
+| `data/story.json` | Written by hand: How I lead, Case studies, Contact wording. Edit freely. |
+| `public/cv/latest.pdf` | The file behind the Download CV buttons. |
+| `public/og.jpg` | The picture shown when the link is shared (LinkedIn, WhatsApp, X). |
+| `src/assets/` | Hero portrait, contact portrait, Nairobi skyline. |
+| `src/components/` | One file per section: Hero, Impact, HowILead, CaseStudies, Journey, Toolkit, Contact. |
+| `src/motion.js` | The two motion curves the whole site uses. |
+
+## Sections
+
+Hero · Impact · How I lead · Case studies · Journey · Toolkit · Contact
+
+## One-time GitHub setting
+
+Settings → Pages → Build and deployment → Source: **GitHub Actions**.
+
+The 2022 site is kept on the `legacy-2022` branch.

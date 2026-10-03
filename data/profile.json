@@ -1,28 +1,28 @@
 {
-  "generated_from": "Elijah_Ndeto_CV_05_2026.docx",
-  "generated_at": "2026-07-15",
+  "generated_from": "Elijah_Ndeto_CV_09_2026.docx",
+  "generated_at": "2026-10-03",
   "identity": {
     "name": "Elijah Ndeto",
-    "roles": [
-      "Data Engineer",
-      "Data Platform Lead",
-      "Streaming Architect",
-      "Cloud Migration Lead"
-    ],
+    "headline": "Senior Data Engineer",
     "location": "Nairobi, Kenya",
     "email": "elito1236@gmail.com",
-    "phone": "+254 799 123 773",
     "linkedin": "https://linkedin.com/in/elito0905",
     "github": "https://github.com/doncoding-ai",
-    "tagline": "I design and lead data platforms that turn chaos into decisions — in production, at scale."
+    "tagline": "I design and run the data platforms behind real-time decisions, from ingestion to recovery.",
+    "roles": [
+      "Senior Data Engineer",
+      "Real-time streaming on GCP",
+      "Lakehouse and cloud migration",
+      "Data architecture at scale"
+    ]
   },
-  "summary": "Data Engineer with 5+ years of experience building and optimising scalable data platforms for analytics and reporting across cloud and on-premise environments. Proven expertise in ELT/ETL pipeline development, data modelling, and cloud migration, with hands-on experience in GCP, Snowflake, Databricks, SQL, and Python. Currently delivering near real-time BI streaming infrastructure at Sportserve. Adept at designing reliable data workflows, supporting modern warehouse and lakehouse architectures, and delivering trusted data solutions that improve reporting, operational visibility, and business decision-making.",
+  "summary": "Senior Data Engineer with 5+ years designing, migrating and running data platforms across cloud and on-premise environments. Currently own near real-time BI streaming infrastructure on GCP at Sportserve, from ingestion to recovery. Previously architected an enterprise warehouse across 20+ source systems, moved 15+ systems to Snowflake, and led an on-premise to Databricks and Snowflake lakehouse migration. Known for taking end-to-end ownership of reliability, governance and data quality, and for translating between BI, warehouse and engineering teams.",
   "telemetry": [
     {
       "value": 5,
       "suffix": "+",
       "label": "Years in production",
-      "detail": "Auditor → Modeler → Architect → Engineer"
+      "detail": "Auditor to architect to senior engineer"
     },
     {
       "value": 40,
@@ -34,38 +34,43 @@
       "value": 20,
       "suffix": "+",
       "label": "Source systems architected",
-      "detail": "Unified into enterprise warehouses"
+      "detail": "Unified into one enterprise warehouse"
     },
     {
       "value": 15,
       "suffix": "+",
       "label": "Systems migrated to cloud",
-      "detail": "On-prem → Snowflake EDW"
+      "detail": "On-premise to Snowflake"
     }
   ],
+  "currently": {
+    "company": "Sportserve",
+    "role": "Senior Data Engineer, BI Streaming Platform",
+    "since": "Jan 2026",
+    "line": "Running near real-time BI streaming on GCP, and taking server-side marketing tracking to production."
+  },
   "experience": [
     {
-      "role": "Data Engineer – BI Streaming Platform",
+      "role": "Senior Data Engineer – BI Streaming Platform",
       "company": "Sportserve",
       "period": "Jan 2026 — Present",
       "tag": "STREAMING",
       "bullets": [
-        "Designed and operated cloud-native data ingestion pipelines on GCP, enabling scalable near real-time data delivery for BI systems.",
-        "Built and maintained serverless data workflows using Cloud Run, Cloud Functions, and Cloud Scheduler for automated data processing.",
-        "Managed ingestion and storage of high-volume data into BigQuery and GCS, supporting downstream analytics and reporting.",
-        "Improved pipeline reliability and observability by monitoring workflows, troubleshooting failures, and resolving data freshness issues.",
-        "Led and supported data backfill and recovery processes, ensuring completeness and accuracy of critical datasets.",
-        "Contributed to CI/CD-driven deployment pipelines, automating Cloud Run services and Eventarc triggers across environments.",
-        "Collaborated with Data Warehouse and BI teams to ensure consistent and reliable data delivery for analytics use cases.",
-        "Configured GCP resources (Firestore, GCS, service accounts) to enable scalable and secure data architectures."
+        "Took ownership of the CRM activation platform through handover and stood up its pre-production environment across six markets (LATAM, India, Japan, Rest of Asia, Rest of World and a brand market): Cloud Functions, Cloud Run, Eventarc, Firestore, GCS and APIs, with CI/CD for Cloud Run services.",
+        "Built and shipped server-side tracking that streams successful-deposit events from the payments pipeline to GA4 via Google Tag Manager, with player-level user IDs, a currency dimension and success and failure logging in BigQuery.",
+        "Delivered a server-side GTM marketing-campaign integration from investigation to production in about five weeks; now extending it to near real-time first-time-deposit tracking and handing knowledge over to the team.",
+        "Designed and deployed a Firestore-to-BigQuery backfill solution to recover missing records, and hardened production pipelines through runtime upgrades, duplicate removal, scheduler fixes and a documented review of game-provider Cloud Functions.",
+        "Partnered with business analysts on payments intelligence: built BigQuery tables and monitoring views for affiliate statistics, bank-transaction matching and payment-provider reconciliation."
       ],
       "stack": [
         "GCP",
         "BigQuery",
         "Cloud Run",
-        "Pub/Sub",
+        "Cloud Functions",
         "Eventarc",
         "Firestore",
+        "GTM",
+        "GA4",
         "CI/CD"
       ]
     },
@@ -140,101 +145,76 @@
         "Validation",
         "Reporting"
       ]
+    },
+    {
+      "role": "IT Support Specialist",
+      "company": "Don’s Technologies",
+      "period": "2019 — 2021",
+      "tag": "SUPPORT",
+      "bullets": [
+        "Provided technical support, software maintenance and troubleshooting for business clients.",
+        "Set up networking and infrastructure, including CCTV and connectivity solutions.",
+        "Supported website development, technical documentation and software rollouts."
+      ],
+      "stack": [
+        "Support",
+        "Networking",
+        "Web"
+      ]
     }
   ],
   "stack": [
     {
-      "group": "Cloud & Warehouse",
+      "group": "Ingest & stream",
       "items": [
-        "GCP",
-        "BigQuery",
         "Cloud Run",
         "Cloud Functions",
-        "Firestore",
-        "GCS",
         "Eventarc",
-        "Snowflake",
-        "Databricks",
-        "Azure"
+        "Pub/Sub",
+        "Kafka",
+        "REST APIs",
+        "GTM server-side"
       ]
     },
     {
-      "group": "Pipelines & Orchestration",
+      "group": "Transform",
       "items": [
         "dbt",
-        "Apache Kafka",
-        "Apache Airflow",
         "PySpark",
-        "REST APIs",
-        "CI/CD",
-        "Cloud Scheduler"
-      ]
-    },
-    {
-      "group": "Languages",
-      "items": [
-        "Python",
+        "Airflow",
         "SQL",
-        "PySpark",
-        "R",
-        "ABAP"
+        "Python"
       ]
     },
     {
-      "group": "Tools & Dev",
+      "group": "Warehouse & lakehouse",
       "items": [
-        "Docker",
-        "Git",
-        "GitHub",
-        "GitLab",
-        "ERWIN",
-        "DBeaver",
-        "Jira",
-        "Collibra",
-        "Unity Catalog"
+        "BigQuery",
+        "Snowflake",
+        "Databricks",
+        "Azure Synapse",
+        "Firestore",
+        "GCS"
       ]
     },
     {
-      "group": "Visualisation",
+      "group": "Govern",
+      "items": [
+        "Unity Catalog",
+        "Collibra",
+        "Data Vault",
+        "MDM",
+        "RBAC"
+      ]
+    },
+    {
+      "group": "Visualise",
       "items": [
         "Power BI",
         "Tableau",
-        "Looker Studio"
+        "Looker Studio",
+        "GA4"
       ]
-    }
-  ],
-  "proficiency": [
-    {
-      "skill": "Python",
-      "level": 95
-    },
-    {
-      "skill": "SQL",
-      "level": 95
-    },
-    {
-      "skill": "GCP",
-      "level": 92
-    },
-    {
-      "skill": "BigQuery",
-      "level": 90
-    },
-    {
-      "skill": "Snowflake",
-      "level": 88
-    },
-    {
-      "skill": "Databricks / PySpark",
-      "level": 85
-    },
-    {
-      "skill": "dbt",
-      "level": 80
-    },
-    {
-      "skill": "Kafka / Streaming",
-      "level": 78
     }
   ],
   "projects": [
@@ -266,8 +246,7 @@
       "stack": [
         "Python",
         "SQLAlchemy",
-        "PostgreSQL",
-        "REST"
+        "PostgreSQL"
       ]
     }
   ],

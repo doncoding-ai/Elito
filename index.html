@@ -1,144 +1,30 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Elijah Ndeto — Data Platform Lead</title>
-  <meta name="description" content="Elijah Ndeto. Data platform leader in Nairobi. Streaming infrastructure, cloud migration, enterprise architecture — GCP, Snowflake, Databricks." />
-  <meta property="og:title" content="Elijah Ndeto — Data Platform Lead" />
-  <meta property="og:description" content="I design and lead data platforms that turn chaos into decisions." />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="assets/css/style.css" />
-  <script>if (!matchMedia('(prefers-reduced-motion: reduce)').matches) document.documentElement.classList.add('js-motion');</script>
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='40' fill='none' stroke='%235EEAD4' stroke-width='8'/></svg>" />
-</head>
-<body>
-
-  <!-- the aurora — one GPU shader light field behind everything -->
-  <canvas id="aurora" aria-hidden="true"></canvas>
-  <!-- luminous rain, hero only -->
-  <canvas id="rain" aria-hidden="true"></canvas>
-  <!-- floating glass skill orbs -->
-  <div id="orbField" aria-hidden="true"></div>
-
-  <!-- NAV -->
-  <nav class="nav" id="nav">
-    <a class="nav-logo" href="#top">Elijah Ndeto</a>
-    <div class="nav-links">
-      <a href="#impact">Impact</a>
-      <a href="#journey">Journey</a>
-      <a href="#craft">Craft</a>
-      <a href="#work">Work</a>
-      <a href="#contact" class="nav-cta">Let's talk</a>
-    </div>
-    <div class="nav-right">
-      <button class="sound-toggle" id="soundToggle" aria-pressed="false" title="Ambient sound">
-        <span class="st-icon">◇</span><span class="st-label">Sound</span>
-      </button>
-      <button class="nav-burger" id="navBurger" aria-label="Menu"><span></span><span></span><span></span></button>
-    </div>
-  </nav>
-
-  <!-- ============ HERO ============ -->
-  <header class="hero" id="top" data-scene="hero">
-    <div class="hero-inner">
-      <p class="hero-hello" id="heroHello">Nairobi, Kenya · Open to senior roles worldwide</p>
-      <h1 class="hero-name" id="heroName">
-        <span class="name-line"><span>Elijah</span></span>
-        <span class="name-line"><span>Ndeto</span></span>
-      </h1>
-      <p class="hero-role"><span id="roleCycle">Data Platform Lead</span></p>
-      <p class="hero-tag" id="heroTag"></p>
-      <div class="hero-actions">
-        <a href="#impact" class="btn btn-primary" data-magnetic>View my impact</a>
-        <a href="#" id="cvDownload" class="btn btn-ghost" data-magnetic download>Download CV</a>
-      </div>
-    </div>
-    <div class="scroll-cue" aria-hidden="true"><span></span></div>
-  </header>
-
-  <main>
-    <!-- ============ IMPACT ============ -->
-    <section class="section" id="impact" data-scene="impact">
-      <p class="eyebrow st-reveal">01 — Impact</p>
-      <h2 class="section-title st-reveal">Numbers first.<br/>Everything else follows.</h2>
-      <p class="section-sub st-reveal">Five years of platforms measured in production — not promises.</p>
-
-      <div class="impact-grid" id="telemetryGrid"></div>
-
-      <div class="dashboard glass">
-        <div class="dash-head">
-          <span class="dash-title">Career at a glance</span>
-          <div class="dash-stickers" id="dashStickers"></div>
-        </div>
-        <div class="dash-grid">
-          <div class="dash-card" id="dashBar">
-            <p class="dash-label">Systems delivered by era</p>
-            <canvas id="barChart" height="220"></canvas>
-          </div>
-          <div class="dash-card" id="dashDonut">
-            <p class="dash-label">Where my toolkit lives</p>
-            <canvas id="donutChart" height="220"></canvas>
-          </div>
-          <div class="dash-card dash-wide" id="dashArea">
-            <p class="dash-label">Capability growth · 2021 → 2026</p>
-            <canvas id="areaChart" height="130"></canvas>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ============ JOURNEY ============ -->
-    <section class="section" id="journey" data-scene="journey">
-      <p class="eyebrow st-reveal">02 — Journey</p>
-      <h2 class="section-title st-reveal">Every role earned<br/>the next one.</h2>
-      <p class="section-sub st-reveal">From guarding data quality to leading streaming platforms — each stage built on the last.</p>
-      <div class="pipeline" id="pipelineList"></div>
-    </section>
-
-    <!-- ============ CRAFT ============ -->
-    <section class="section" id="craft" data-scene="craft">
-      <p class="eyebrow st-reveal">03 — Craft</p>
-      <h2 class="section-title st-reveal">A toolkit shaped<br/>by real workloads.</h2>
-      <p class="section-sub st-reveal">Chosen, not collected — every tool here has shipped something that mattered.</p>
-      <div class="stack-layout">
-        <div class="stack-groups" id="stackGroups"></div>
-        <div class="beams glass" id="beams">
-          <p class="beams-label">Depth of practice</p>
-        </div>
-      </div>
-    </section>
-
-    <!-- ============ WORK ============ -->
-    <section class="section" id="work" data-scene="work">
-      <p class="eyebrow st-reveal">04 — Selected work</p>
-      <h2 class="section-title st-reveal">Built across clouds.<br/>Held to one standard.</h2>
-      <p class="section-sub st-reveal">Different platforms, different stacks — the same care, end to end.</p>
-      <div class="projects-grid" id="projectsGrid"></div>
-    </section>
-
-    <!-- ============ CONTACT ============ -->
-    <section class="section contact" id="contact" data-scene="contact">
-      <p class="eyebrow st-reveal">05 — Next</p>
-      <h2 class="section-title st-reveal">Let's build something<br/>worth measuring.</h2>
-      <p class="section-sub st-reveal">If your data should be moving faster, cleaner, and with someone accountable for it — I'd love to talk.</p>
-      <div class="signal-links" id="signalLinks"></div>
-      <p class="edu" id="eduLine"></p>
-    </section>
-  </main>
-
-  <footer class="footer">
-    <span>© <span id="year"></span> Elijah Ndeto</span>
-    <span id="buildStamp"></span>
-    <span>Nairobi, Kenya</span>
-  </footer>
-
-  <script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/ScrollTrigger.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/SplitText.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/lenis@1.3.26/dist/lenis.min.js"></script>
-  <script src="assets/js/main.js"></script>
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Elijah Ndeto — Senior Data Engineer</title>
+    <meta name="description" content="Elijah Ndeto, Senior Data Engineer in Nairobi. I design and run the data platforms behind real-time decisions, from ingestion to recovery." />
+    <meta property="og:title" content="Elijah Ndeto — Senior Data Engineer" />
+    <meta property="og:description" content="I design and run the data platforms behind real-time decisions." />
+    <!-- Share preview (LinkedIn, WhatsApp, X, Slack). These need full addresses, not relative paths. -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://doncoding-ai.github.io/Elito/" />
+    <meta property="og:site_name" content="Elijah Ndeto" />
+    <meta property="og:image" content="https://doncoding-ai.github.io/Elito/og.jpg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Elijah Ndeto, Senior Data Engineer in Nairobi, over the Nairobi skyline at night" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Elijah Ndeto — Senior Data Engineer" />
+    <meta name="twitter:description" content="I design and run the data platforms behind real-time decisions." />
+    <meta name="twitter:image" content="https://doncoding-ai.github.io/Elito/og.jpg" />
+    <link rel="canonical" href="https://doncoding-ai.github.io/Elito/" />
+    <meta name="theme-color" content="#05060A" />
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%2339FF88'/%3E%3Cstop offset='1' stop-color='%232F8BFF'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='14' fill='url(%23g)'/%3E%3Ctext x='32' y='42' text-anchor='middle' font-family='Arial,sans-serif' font-weight='900' font-size='26' fill='%2305060A'%3EEN%3C/text%3E%3C/svg%3E" />
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
 </html>
